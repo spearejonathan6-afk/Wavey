@@ -1,141 +1,90 @@
+"use client";
 
+import { useState, FormEvent } from "react";
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create an Account</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
+export default function SignUpPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
-    body {
-      background-color: #f4f6f8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    // Replace this with your actual signup API call or auth logic (e.g., Supabase, NextAuth, Clerk)
+    console.log("Signing up user:", { name, email, password });
+    setSubmitted(true);
+  };
 
-    .signup-card {
-      background: #ffffff;
-      padding: 32px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      width: 100%;
-      max-width: 400px;
-    }
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+      <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-md">
+        <h1 className="mb-2 text-2xl font-bold text-gray-900">Create an account</h1>
+        <p className="mb-6 text-sm text-gray-600">
+          Enter your details below to get started.
+        </p>
 
-    h2 {
-      margin-bottom: 8px;
-      color: #1f2937;
-      text-align: center;
-    }
+        {submitted ? (
+          <div className="rounded-lg bg-green-50 p-4 text-sm text-green-800">
+            Account created for <strong>{email}</strong>!
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                Full Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Jane Doe"
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none"
+              />
+            </div>
 
-    p.subtitle {
-      margin-bottom: 24px;
-      color: #6b7280;
-      font-size: 14px;
-      text-align: center;
-    }
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email Address
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none"
+              />
+            </div>
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                minLength={8}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none"
+              />
+            </div>
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #374151;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 14px;
-      transition: border-color 0.2s;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: #2563eb;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #2563eb;
-      color: #ffffff;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: background-color 0.2s;
-    }
-
-    button:hover {
-      background-color: #1d4ed8;
-    }
-
-    .login-link {
-      margin-top: 16px;
-      text-align: center;
-      font-size: 14px;
-      color: #6b7280;
-    }
-
-    .login-link a {
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    .login-link a:hover {
-      text-decoration: underline;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="signup-card">
-    <h2>Create Account</h2>
-    <p class="subtitle">Sign up to get started</p>
-
-    <form action="/signup" method="POST">
-      <div class="form-group">
-        <label for="fullname">Full Name</label>
-        <input type="text" id="fullname" name="fullname" placeholder="Jane Doe" required />
+            <button
+              type="submit"
+              className="w-full rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white transition hover:bg-blue-700"
+            >
+              Sign Up
+            </button>
+          </form>
+        )}
       </div>
+    </main>
+  );
+}
 
-      <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required />
-      </div>
-
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="••••••••" minlength="8" required />
-      </div>
-
-      <button type="submit">Sign Up</button>
-    </form>
-
-    <div class="login-link">
-      Already have an account? <a href="/login">Log in</a>
-    </div>
-  </div>
-
-</body>
-</html>
